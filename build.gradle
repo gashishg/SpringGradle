@@ -1,0 +1,87 @@
+/**
+ *  File: build.gradle
+ ********************************************************************************
+ *  Date        Author                  Changes
+ ********************************************************************************
+ *  Dec 24, 2014    agupta			         Created
+ ********************************************************************************
+ * Copyright (c) 2002 Synapse Group, Inc.
+ * 5 High Ridge Park, Stamford, Connecticut, 06905-1325, U.S.A.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of
+ * Synapse Group, Inc. ("Confidential Information"). You shall not
+ * disclose such Confidential Information and shall use it only in
+ * accordance with the terms of the licence agreement you entered
+ * into with Synapse Group, Inc.
+ */
+/**
+ * This is the build file for the spring gradle project
+ */
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = 'hello.HelloWorld'
+
+jar {
+	baseName = 'springgradle'
+	version =  '0.1.0'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/java'
+        }
+		
+		resources {
+			srcDir 'src/resources'
+		}
+    }
+
+    test {
+        java {
+            srcDirs 'test/java'
+        }
+    }
+}
+
+repositories {
+	maven{ 	 	url		'http://synt5120-18z2-1:58081/nexus/content/groups/public/'          }
+	maven{  	url		'http://synt5120-18z2-1:58081/nexus/content/repositories/releases/'  }
+	maven{ 	    url		'http://synt5120-18z2-1:58081/nexus/content/repositories/thirdparty/'}
+}
+
+dependencies {
+	compile "log4j:log4j:1.2.17"
+	
+	runtime "oracle.jdbc:ojdbc14:10.2.0.3"
+	
+	compile "joda-time:joda-time:2.2"
+
+	compile "oracle.weblogic:thin-t3-client:10.3.6"
+	
+	compile "org.springframework:spring-context:4.1.5.RELEASE"
+    
+    compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
+	compile "javax.mail:mail:1.4.7"
+	compile "com.sun.mail:smtp:1.5.1"
+    
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
+
+task callSpringGrade (dependsOn: 'classes', type: JavaExec) {
+	main = 'hello.HelloWorld'
+	args = ['-p H:\\Documents\\dev\\GITBash\\spinner\\synclubs\\synclubs\\app\\augeoapp\\batch', '-d 12/17/2014']
+	classpath = sourceSets.main.runtimeClasspath
+}
+
+task callApplication (dependsOn: 'classes', type: JavaExec) {
+	main = 'hello.Application'
+	args = ['-p H:\\Documents\\dev\\GITBash\\spinner\\synclubs\\synclubs\\app\\augeoapp\\batch', '-d 12/17/2014']
+	classpath = sourceSets.main.runtimeClasspath
+}
